@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title> Companies House UK Monitor</title>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='assets/favicon.ico') }}" type="image/x-icon" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="{{ url_for('static', filename='js/allcompanies.js') }}"></script>
+</head>
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <a class="navbar-brand" href="/""><i class="fa fa-fw fa-dashboard"></i> Companies House UK Monitor</a>
+  </nav>
+  <div class="content-wrapper">
+    <div class="container-fluid">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">My Dashboard</li>
+      </ol>
+        <div class="h1 bg-light text-center t"><i class="fa fa-ticket" aria-hidden="true"></i> CHUKMON Dashboard
+          <small> 
+            <a href="/settings" class="float-right small" title="Manage settings"><i class="fas fa-cog" style="margin: 10px"></i></a>
+            <a href="/goodcompanies" class="float-right small" title="Manage Good Companies"><i class="fas fa-list" style="margin: 10px"></i></a>
+            <a href="/" class="float-right small" title="Home"><i class="fas fa-home" style="margin: 10px"></i></a>
+          </small>            </div>
+          <div class="card mb-3">
+
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="allcompanies" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>Company</th>
+                      <th>Company#</th>
+                      <th>Status</th>
+                      <th>Type</th>
+                      <th>Inc Date</th>
+                      <th>Registered Office</th>
+                      <th>Ignore</th>
+                    </tr>
+                  </thead>
+                  <tbody id="customer-table">
+                  </tbody>
+                </table>
+              </div>
+            </div>
+      </div>
+    </div>
+    <footer class="bg-light text-center text-lg-start">
+      <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+        <a class="text-dark" href="https://github.com/apjone/chukmon" target="_blank"><i class="fab fa-github"></i> apjone/chukmon</a>
+      </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+    <script src="https://kit.fontawesome.com/4421620a36.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+
+      $(document).ready(function() {
+      $('#allcompanies').DataTable( {
+      "pageLength": 25,
+      dom: 'Bfrtip',
+      buttons: [
+          'copyHtml5',
+          'excelHtml5',
+          'csvHtml5',
+          'pageLength',
+          'pdfHtml5'
+      ], 
+      "order": [[ 1, "desc" ]],
+          "ajax": "api/allcompanies"
+      } );
+      } );
+    </script>
+    <script>
+      function ignore(company_number){
+        fetch('/api/ignore/' + company_number, { cache: "no-cache" });
+        alert("Added " + company_number + " to companies to ignore");
+        setTimeout(() => { console.log("Ignored " + company_number + "!"); }, 2000);
+        $('#allcompanies').DataTable().ajax.reload();
+      }
+    </script>
+  </div>
+</body>
+</html>

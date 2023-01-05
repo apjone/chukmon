@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title> Companies House UK Monitor</title>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='assets/favicon.ico') }}" type="image/x-icon" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="{{ url_for('static', filename='js/terms.js') }}"></script>
+</head>
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <a class="navbar-brand" href="/""><i class="fa fa-fw fa-dashboard"></i> Companies House UK Monitor</a>
+  </nav>
+  <div class="content-wrapper">
+    <div class="container-fluid">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">My Dashboard</li>
+      </ol>
+        <div class="h1 bg-light text-center t"><i class="fa fa-ticket" aria-hidden="true"></i> CHUKMON Settings
+          <small> 
+            <a href="/settings" class="float-right small" title="Manage settings"><i class="fas fa-cog" style="margin: 10px"></i></a>
+            <a href="/terms" class="float-right small" title="Manage Good Companies"><i class="fas fa-list" style="margin: 10px"></i></a>
+            <a href="/" class="float-right small" title="Home"><i class="fas fa-home" style="margin: 10px"></i></a>
+          </small> 
+        </div>
+          <div class="card mb-3">
+            <div class="card-header">Search Terms</div>
+            <div class="card-body">
+              <span>You can use the following text box to enter a new term to search. You can review and remove existing terms using the table below. <p><b>NOTE:</b>Removing a term will not remove data from DB.</p>
+              <div class="form-group">
+                <label>Term</label>
+                <input id="inputterm" name="inputterm" />
+                <button type="button" class="btn btn-primary" onclick="addterm()" id="btnRefresh">Add</button>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-bordered" id="terms" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>Term</th>
+                      <th>Remove</th>
+                    </tr>
+                  </thead>
+                  <tbody id="customer-table">
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            </div>
+            <div class="card mb-3">
+              <div class="card-header">Force Refresh - <span class="lupdate" id="lupdate">??</span></div>
+              <div class="card-body">
+                <span>Click Here to refresh data <button type="button" class="btn btn-warning" onclick="refresh()" id="btnRefresh">Refresh</button></span>
+              </div>
+            </div>
+      </div>
+    </div>
+    <footer class="bg-light text-center text-lg-start">
+      <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+        <a class="text-dark" href="https://github.com/apjone/chukmon" target="_blank"><i class="fab fa-github"></i> apjone/chukmon</a>
+      </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+    <script src="https://kit.fontawesome.com/4421620a36.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+            $(document).ready(function() {
+            $('#terms').DataTable( {
+            "pageLength": 10,
+            dom: 'Bfrtip',
+            buttons: [
+                'copyHtml5',
+                'excelHtml5',
+                'csvHtml5',
+                'pageLength',
+                'pdfHtml5'
+            ], 
+            "order": [[ 1, "desc" ]],
+                "ajax": "api/terms"
+            } );
+        } );
+    </script>
+    <script>
+      function removeterm(term){
+      console.log(term);
+      fetch('/api/removeterm/' + term, { cache: "no-cache" });
+      //alert("Removed " + term + " from good companies");
+      setTimeout(() => { console.log("Removed " + term + "!"); }, 2000);
+      $('#terms').DataTable().ajax.reload();
+      }
+
+      const chRefresh = async () => {
+      const res = await fetch('/api/refresh', { cache: "no-cache" })
+        .then (document.getElementById("btnRefresh").className = "btn btn-success")
+        .then (document.getElementById("btnRefresh").innerText = "Refresh Requested")
+        .then (document.getElementById("btnRefresh").disabled = true)
+        .then (console.log("Refresh Completed"));
+      }
+
+      function refresh() {
+        console.log("Refresh Started");
+        document.getElementById("btnRefresh").disabled = true;
+      document.getElementById("btnRefresh").className = "btn btn-danger";
+      document.getElementById("btnRefresh").innerText = "Refreshing....";
+      chRefresh();
+      }
+
+      </script>
+      <script>
+      console.log("get date");
+      $(document).ready(function() {
+            $.ajax({
+                url: "/api/lastrefresh",
+                cache: false,
+                cors: true,
+                success: function(data) {
+                  $('#lupdate').text(data);
+                }
+            });
+        });
+     console.log("got date");
+    </script>
+    <script>      
+    function addterm(){
+      term = document.getElementById("inputterm").value;
+      document.getElementById("inputterm").value = "";
+      fetch('/api/add/' + term, { cache: "no-cache" });
+      $('#terms').DataTable().ajax.reload();
+    }
+    </script>
+  </div>
+</body>
+</html>

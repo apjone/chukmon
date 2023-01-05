@@ -1,0 +1,11 @@
+create table companieshouse (companyname text,
+company_number int unique,
+company_status text,
+company_type text,
+company_subtype text,
+dissolution_date date,
+incorporation_date date,
+removed_date date,
+registered_date date,
+nature_of_business text,
+registered_office_address text );
