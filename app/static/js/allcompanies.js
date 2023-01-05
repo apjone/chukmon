@@ -40,7 +40,7 @@ function getallcompanies(){
             cardBody.className = 'card-body';
     
             let title = document.createElement('h6');
-            title.innerText = data[i]['company_name'] + " " + data[i]['count'] ;
+            title.innerText = data[i]['incorporation_date'] + " " + data[i]['count'] ;
             title.className = 'float-left';
 
     
