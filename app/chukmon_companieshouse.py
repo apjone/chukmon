@@ -12,7 +12,7 @@ def chukmon_chinfo():
     try:
         connection = sqlite3.connect(DB_FILE)
     except Exception as e:
-        print("Error:" + str(e))
+        #print("Error:" + str(e))
         exit(1)
     c = connection.cursor()
     results = c.execute("select term from searchcompanies")
@@ -23,7 +23,7 @@ def chukmon_chinfo():
 
     for t in terms:
         term = t[0]
-        print("Getting:" + term)
+        #print("Getting:" + term)
         chresponse = r.get("https://find-and-update.company-information.service.gov.uk/advanced-search/download?companyNameIncludes=" + term)
         lines_iter = chresponse.iter_lines()
         data = csv.reader(codecs.iterdecode(lines_iter, encoding="utf-8"), delimiter=",")
