@@ -29,7 +29,7 @@ def chukmon_chinfo():
         data = csv.reader(codecs.iterdecode(lines_iter, encoding="utf-8"), delimiter=",")
         for index, row in enumerate(data):
             if row[0] != "company_name":
-                print(row[0])
+                #print(row[0])
                 companyname = row[0]
                 company_number = row[1]
                 company_status = row[2]

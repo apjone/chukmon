@@ -106,7 +106,8 @@
       setTimeout(() => { console.log("Removed " + term + "!"); }, 2000);
       $('#terms').DataTable().ajax.reload();
       }
-
+    </script>
+    <script>
       const chRefresh = async () => {
       const res = await fetch('/api/refresh', { cache: "no-cache" })
         .then (document.getElementById("btnRefresh").className = "btn btn-success")
@@ -143,6 +144,7 @@
       term = document.getElementById("inputterm").value;
       document.getElementById("inputterm").value = "";
       fetch('/api/add/' + term, { cache: "no-cache" });
+      setTimeout(() => { console.log("Added " + term + "!"); }, 2000);
       $('#terms').DataTable().ajax.reload();
     }
     </script>
