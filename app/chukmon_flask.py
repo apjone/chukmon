@@ -30,7 +30,7 @@ def getall():
         print("Error:" + str(e))
         exit(1)
     c = connection.cursor()
-    results = c.execute("select companyname, company_number, company_status, company_type, incorporation_date, registered_office_address, \"<p><i class='fa fa-times fa-2x' aria-hidden='true' onclick=ignore('\" || company_number || \"')></i></p>\" from companieshouse where company_number not in ( select company_number from goodcompanies) order by incorporation_date desc")    
+    results = c.execute("select companyname, \"<a href=\'https://find-and-update.company-information.service.gov.uk/company/\" || company_number || \"' target='_blank'>\" || company_number || \"</a>\", company_status, company_type, incorporation_date, registered_office_address, \"<p><i class='fa fa-times fa-2x' aria-hidden='true' onclick=ignore('\" || company_number || \"')></i></p>\" from companieshouse where company_number not in ( select company_number from goodcompanies) order by incorporation_date desc")    
     return jsonify(data=results.fetchall())
 
 @app.route('/api/goodcompanies')

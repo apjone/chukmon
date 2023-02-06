@@ -131,4 +131,5 @@ dmypy.json
 
 # chukmon
 db/*.sqlite
-data/
+data/*
+docker/data
