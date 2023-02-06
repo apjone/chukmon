@@ -6,6 +6,6 @@ services:
     restart: always
     build: .
     ports:
-      - "8181:8181"
+      - "127.0.0.1:8181:8181"
     volumes:
       - ./data:/data
