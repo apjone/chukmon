@@ -1,1 +1,1 @@
-create table goodcompanies ( company_number int unique );
+create table goodcompanies ( company_number text unique );

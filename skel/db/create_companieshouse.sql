@@ -1,5 +1,5 @@
 create table companieshouse (companyname text,
-company_number int unique,
+company_number text unique,
 company_status text,
 company_type text,
 company_subtype text,
