@@ -57,7 +57,7 @@ source venv/bin/activate
 
 3. Install requirements
 ```bash
-pip3 install -r requirments.tx
+pip3 install -r requirments.txt
 ```
 
 4. Create `.env` and update as required

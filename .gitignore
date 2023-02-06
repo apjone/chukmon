@@ -131,3 +131,4 @@ dmypy.json
 
 # chukmon
 db/*.sqlite
+data/
