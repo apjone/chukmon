@@ -25,7 +25,7 @@ This might be useful for OSINT or monitoring for `look-a-like` companies being s
 ![](screenshots/settings.png)
 
 # Docker
-I have created a `Dockerfile` and `docker-compose.yml` files for running the application within Docker. You can find them within this repo but I have not yet create docker repo account to upload over there.
+I have created a `Dockerfile` and `docker-compose.yml` files for running the application within Docker. You can find them within this repo but I have not yet created a docker repo account to upload over there.
 
 # Install
 
