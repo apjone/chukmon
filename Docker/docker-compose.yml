@@ -1,0 +1,11 @@
+---
+version: '3'
+
+services:
+  chukmon:
+    restart: always
+    build: .
+    ports:
+      - "8181:8181"
+    volumes:
+      - ./data:/data
