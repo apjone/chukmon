@@ -35,7 +35,7 @@ RUN python3 -m venv chukmon-env && \
     pip install --no-cache-dir --upgrade -r requirments.txt && \
     cp env.default .env
 
-RUN sed -i 's#DB_FILE =  "data/chukmon.sqlite"#DB_FILE =  "/data/chukmon.sqlite"#g' .env
+RUN sed -i 's#DB_FILE =  "chukmon.sqlite"#DB_FILE =  "/data/chukmon.sqlite"#g' .env
 RUN sed -i 's#APP_HOST = "127.0.0.1"#APP_HOST = "0.0.0.0"#g' .env
 
 
