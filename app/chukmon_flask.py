@@ -1,4 +1,5 @@
-#!/usr/bin/env python3
+# coding: utf8
+# #!/usr/bin/env python3
 import os, sqlite3
 from flask import Flask, render_template, request, jsonify
 from chukmon_companieshouse import chukmon_chinfo

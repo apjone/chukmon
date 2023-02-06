@@ -1,4 +1,5 @@
-#!/usr/bin/env python3
+# coding: utf8
+# #!/usr/bin/env python3
 
 # Borrowed form https://stackoverflow.com/a/49801719
 import time, traceback
